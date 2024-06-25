@@ -9,7 +9,7 @@ on:
 
 jobs:
   run_deploy:
-    uses: ./terraform.yml
+    uses: dionakra-ai/pipelines/.github/workflows/terraform.yml@main
     with:
       environment: ${{ github.ref_name }}
     secrets: inherit
