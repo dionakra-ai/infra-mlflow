@@ -1,0 +1,15 @@
+**/.terraform*
+
+**/*terraformrc*
+
+**/*terraform.rc*
+
+**/*tfstate*
+
+**/*tfplan*
+
+**/*override.tf*
+
+**/tmp/*
+
+**/*.zip

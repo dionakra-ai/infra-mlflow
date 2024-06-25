@@ -1,0 +1,22 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": "ecr:GetAuthorizationToken",
+            "Resource": "*"
+        },
+        ${REPOSITORY}
+        ${KMS}
+        ${PARAMETER_STORE}
+        ${SCRETS_MANAGER}
+        {
+            "Effect": "Allow",
+            "Action": [
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
+            ],
+            "Resource": "${LOG_GROUP}:*"
+        }
+    ]
+}

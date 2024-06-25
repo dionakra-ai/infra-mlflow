@@ -1,0 +1,40 @@
+<powershell>
+Invoke-WebRequest -Uri https://cdn.zabbix.com/zabbix/binaries/stable/5.4/5.4.12/zabbix_agent-5.4.12-windows-amd64-openssl.msi -OutFile zabbix-agent.msi
+
+$CheckInstalled = $null
+$MSIFile = "zabbix-agent.msi"
+$exe = "msiexec.exe"
+$ZabbixServer = "172.22.0.110"
+$hostFQDN = "${hostname}"
+$Arguments = "/i $MSIFile HOSTNAME=$hostFQDN SERVER=$ZabbixServer SERVERACTIVE=$ZabbixServer  /qn"
+$AgentVersion = "5.4.12"
+
+$InstallDestination = ($env:ProgramFiles)+"\Zabbix Agent"
+$ZabbixConfig = "zabbix_agentd.conf"
+
+$CheckInstalled = Get-WmiObject -Class Win32_Product | Where-Object {$_.Name -like "zabbix agent*"}
+
+
+
+#First Install
+If ($null -eq $CheckInstalled){
+echo $Arguments
+Start-Process -FilePath $exe -ArgumentList $Arguments -Wait
+Start-Sleep -s 3
+# Update zabbix_agentd.conf for HOSTMETADATA
+$GetFile = Get-Content -Path "$InstallDestination\$ZabbixConfig"
+$GetFile -replace '# HostMetadata=', 'HostMetadata=${account}-windows' | Set-Content -Path "$InstallDestination\$ZabbixConfig"
+Restart-Service -Name 'Zabbix Agent'
+sc.exe failure 'zabbix agent' reset= 86400 actions= restart/120000
+sc.exe config 'zabbix agent' start= delayed-auto
+Start-Service -Name "Zabbix Agent"
+}
+
+#Upgrade
+if ($null -ne $CheckInstalled -and $CheckInstalled.Version -lt $AgentVersion){
+Start-Process -FilePath $exe -ArgumentList $Arguments -Wait
+Restart-Service -Name 'Zabbix Agent'
+}
+
+</powershell>
+<persist>true</persist>

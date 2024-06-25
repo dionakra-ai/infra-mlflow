@@ -1,0 +1,19 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "rds:DescribeDBInstances",
+                "rds:RestoreDBInstanceFromDBSnapshot",
+                "rds:ModifyDBInstance"
+            ],
+            "Resource": ${ARNS_DO_RDS}
+        },
+        {
+            "Effect": "Allow",
+            "Action": "rds:DeleteDBInstance",
+            "Resource": "${ARN_DO_RDS_A_SER_RESTAURADO}-old"
+        }
+    ]
+}

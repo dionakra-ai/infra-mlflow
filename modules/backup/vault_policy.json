@@ -1,0 +1,24 @@
+{
+    "Version": "2012-10-17",
+    "Id": "rds_vault_policy",
+    "Statement": [
+        {
+            "Effect": "Deny",
+            "Principal": {
+                "AWS": "*"
+            },
+            "Action": [
+                "backup:DeleteBackupVault",
+                "backup:PutBackupVaultAccessPolicy",
+                "backup:DeleteBackupVaultAccessPolicy",
+				"backup:DeleteBackupSelection",
+				"backup:DeleteBackupPlan",
+				"backup:StopBackupJob",
+                "backup:DeleteRecoveryPoint",
+                "backup:DisassociateRecoveryPoint",
+                "backup:UpdateRecoveryPointLifecycle"
+            ],
+            "Resource": "${VAULT_ARN}"
+        }
+    ]
+}

@@ -1,0 +1,30 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": "sts:AssumeRole",
+            "Resource": "${TRUSTING_IAM_ARN}"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "rds:CreateDBSnapshot",
+                "rds:DescribeDBSnapshots",
+                "rds:ModifyDBSnapshotAttribute"
+            ],
+            "Resource": [
+                "${BASE_RDS_DB_ARN}",
+                "${BASE_RDS_SNAPSHOT_ARN}-*"
+            ]
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
+            ],
+            "Resource": "${LOG_ARN}:*"
+        }
+    ]
+}
