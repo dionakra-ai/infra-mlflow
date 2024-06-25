@@ -9,7 +9,7 @@ on:
 
 jobs:
   run_deploy:
-    uses: .github/workflows/terraform.yml@main
+    uses: ./terraform.yml
     with:
       environment: ${{ github.ref_name }}
     secrets: inherit
